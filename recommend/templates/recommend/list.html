@@ -1,0 +1,114 @@
+{% extends 'recommend/main.html'%}
+{% block body %}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+body {
+    background-image:url("/static/images/bg.png");
+    background-color:#474747;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+.user_card {
+			width: 200px;
+			height: 330px;
+			margin-top: 25px;
+			margin-bottom: 25px;
+			background: #000;
+			position: relative;
+			display: flex;
+			justify-content: center;
+			flex-direction: column;
+			padding: 10px 13px;
+			box-shadow: 4px 4px 5px 0 rgba(255, 255, 255, 0.5), 4px 6px 5px 0 rgba(255, 255, 255, 0.5);
+			border-radius: 20px;
+		}
+
+* {
+  box-sizing: border-box;
+}
+
+form.form-horizontal input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: 1px solid grey;
+  float: left;
+  width: 80%;
+  background: #f1f1f1;
+}
+
+form.form-horizontal button {
+  float: left;
+  width: auto;
+  padding: 10px;
+  background: #007bff;
+  color: white;
+  font-size: 20px;
+  border: 1px solid grey;
+  border-left: none;
+  border-radius:3px;
+  cursor: pointer;
+}
+
+.movie{
+    width:20%;
+}
+
+form.form-horizontal button:hover {
+  background: #0b7dda;
+}
+
+form.form-horizontal::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+</style>
+<br>
+
+
+<div class="container">
+    <div class="col-xs-6 col-xs-offset-3">
+    	<form class="form-horizontal" role="search" method="get" action='' style="margin:auto;max-width:50%">
+            <div class="form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control input-lg " name="q" value="{{ request.GET.q }}" placeholder= "Search in Movies... " style="font-size:20px"/>
+                    <span class='input-group-btn'>
+                        <button style="font-size:25px;" type="submit"><i class="fa fa-search"></i></button>
+                    </span>
+                </div>
+            </div>
+        </form>
+    </div>
+ </div>
+
+
+<p style="text-align:left;">
+    <center/><h2 style="color:#fff">Movie List</h2>
+</p>
+
+<br>
+<div>
+<!-- Movie list -->
+<div class="row">
+            {% if movies %}
+                {% for movie in movies %}
+        <div class="movie">
+            <div class="column mx-auto">
+            <div class="user_card" style="border-radius: 22px 22px 22px 22px;">
+                <center><h5 style="color:#fff;font-size:18px">{{movie.title}}</h5></center>
+                <a href="{% url 'detail' movie.id %}">
+                    <img src="{{ movie.movie_logo.url}}" class="img-responsive" style="border-radius: 22px 22px 22px 22px;">
+                </a>
+            </div>
+            </div>
+        </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+
+
+{% endblock %}

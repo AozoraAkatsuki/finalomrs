@@ -1,0 +1,96 @@
+{% extends 'recommend/main.html'%}
+{% load static %}
+{% block title %}{{movies.title}}{% endblock %}
+
+{% block body %}
+{% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <div class="alert alert-success">
+              <strong>Success!</strong> {{message}}
+            </div>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+<style>
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.rating-value{
+    width:40px;
+    height:40px;
+    vertical-align:middle;
+    text-align:center;
+}
+body {
+    background-image:url("/static/images/bg.png");
+    background-color:#474747;
+}
+</style>
+
+<div class="container-fluid">
+    <center/><h1 style="color:#fff">{{movies.title}}</h1>
+<br>
+    <div class="row">
+        <!-- Left Movie Info -->
+        <br>
+        <div class="column" style="width:45%;padding-left:200px">
+            <img src="{{ movies.movie_logo.url }}" class="img-responsive" style="border-radius: 10px;width:250px;height:375px;margin-bottom:10px">
+                <form class="form-horizontal" role="search" method="post" action="{% url 'detail' movies.id %}" onsubmit="return validateForm()"  name="ratingForm">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="row">
+                                <div class="col-lg-14">
+                                    <div class="">
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#fff;font-size:25px;">Rate Movie(1-5):</span>
+                                        {% if rate_flag %}
+                                            <input type="number" min="0" max="5" name="rating" class="rating-value" value="{{movie_rating}}">
+                                        {% else %}
+                                            <input type="number" min="0" max="5" name="rating" class="rating-value" value="0">
+                                        {% endif %}
+                                        {% csrf_token %}
+                                    </div>
+                                </div>
+                            </div>
+                            &nbsp;&nbsp;<input type="submit" class="btn btn-info" style="margin-left:10px;font-size:20px;vertical-align:middle" value="Submit">
+                        </div>
+                    </div>
+                </form>
+
+                <form class="form-horizontal" role="search" method="post" action="{% url 'detail' movies.id %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="row">
+                                <div class="col-lg-14">
+                                    <div>
+                                        {% if update %}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for id="check" style="color:#fff;font-size:25px;">Remove from my list: </label>
+                                        <input id="check" type="checkbox" name="watch" checked style="width:20px;height:20px;background:white;border-radius:5px;border:2px solid #555;vertical-align:middle">
+                                        &nbsp;<input type="submit" class="btn btn-info" value="Remove" name="watch" style="font-size:20px;vertical-align:middle">
+                                        {% else %}
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for id="check" style="color:#fff;font-size:25px;">Add to my list: </label>
+                                        <input id="check" type="checkbox" name="watch" style="width:20px;height:20px;background:white;border-radius:5px;border:2px solid #555;vertical-align:middle">
+                                        &nbsp;<input type="submit" class="btn btn-info" value="Add" style="font-size:20px;vertical-align:middle">
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+        </div>
+        <!-- Right Movie Info -->
+        <div class="column" style="width:50%;text-align:left;margin-left:30px">
+            <h3 style="color:#fff"><small>Genre: {{movies.genre}}</small></h3>
+            <iframe width="576" height="324" frameborder="0" allow="autoplay" style="border-radius:5px;" allowfullscreen src="https://www.youtube.com/embed/{{link}}?autoplay=1&amp;mute=1&amp;modestbranding=1&amp;rel=0&amp;showinfo=0&amp;"></iframe>
+        </div>
+    </div>
+    </div>
+</div>
+
+{% endblock %}
